@@ -1,5 +1,6 @@
 using PyPlot
-function earthquake_exercise_setup()
+
+function earthquake_exercise_setup(value_for_two, filename)
     # explosion detector (using spiral coordinate system)
     # define the coordinate system:
     S=2000 # number of points on the spiral
@@ -22,11 +23,19 @@ function earthquake_exercise_setup()
         x_sensor[sensor]=cos(theta_sensor); y_sensor[sensor]=sin(theta_sensor)
         for s=1:S
             for t=1:S
-                v[s,t,sensor]=value(x[s],y[s],x[t],y[t],x_sensor[sensor],y_sensor[sensor]) # explosion value for some value function
+                v[s,t,sensor]=value_for_two(x[s],y[s],x[t],y[t],x_sensor[sensor],y_sensor[sensor]) # explosion value for some value function
             end
         end
     end
-    value_file = open("EarthquakeExerciseData.txt")
+
+    v_one=zeros(S,N)
+    for sensor=1:N
+        for s=1:S
+            v_one[s,sensor]=value_for_one(x[s],y[s],x_sensor[sensor],y_sensor[sensor]) # explosion value for some value function
+        end
+    end
+
+    value_file = open(filename)
     val = map(x->parse(Float64, x), readlines(value_file))
 
     logp=zeros(S,S)
@@ -37,28 +46,36 @@ function earthquake_exercise_setup()
             end
         end
     end
-    p_temp=exp.(logp - maximum(logp)) * (1/sqrt(2*3.14*sd^2))
-    p_temp/=sum(p_temp)
 
-    p_H1 = 0
-    for s=1:S 
-        p_H1 += p_temp[s,s] 
-    end
-
-    p_H2 = 0
-    for s=1:S 
-        for t=1:S 
-            if s != t
-                p_H2 += p_temp[s,t] 
-            end
+    logp_one=zeros(S)
+    for s=1:S
+        for sensor=1:N
+            logp_one[s] += -0.5*(val[sensor]-v_one[s,sensor])^2/(sd^2) # Gaussian distribution
         end
     end
 
-    println("logp(v|H2) - logp(v|H1) = $(log(p_H2) - log(p_H1))")
+    p_temp=exp.(logp .- maximum(logp)) .* (1/sqrt(2*3.14*sd^2))
+
+    p_temp_one=exp.(logp_one .- maximum(logp_one)) .* (1/sqrt(2*3.14*sd^2))
+
+    p_H2 = 0
+    for s=1:S
+        for t=1:S
+            p_H2 += p_temp[t,s] * (1/S) * (1/S)
+        end
+    end
+
+    p_H1 = 0
+    for s=1:S
+        p_H1 += p_temp_one[s] * (1/S)
+    end
+
+    # println("H1: $p_H1 H2: $p_H2")
+    println("For $filename logp(v|H2) - logp(v|H1) = $(log(p_H2) - log(p_H1))")
 
     p=zeros(S)
-    for s=1:S 
-        for t=1:S 
+    for s=1:S
+        for t=1:S
             p[s] += p_temp[s,t]
         end
     end
@@ -82,6 +99,17 @@ function earthquake_exercise_setup()
     legend()
 end
 
-function value(x1, y1, x2, y2, x_sensor, y_sensor) 
+function value_for_two_sum(x1, y1, x2, y2, x_sensor, y_sensor)
     (1 / ((x1 - x_sensor)^2 + (y1 - y_sensor)^2 + 0.1)) + (1 / ((x2 - x_sensor)^2 + (y2 - y_sensor)^2 + 0.1))
 end
+
+function value_for_two_mean(x1, y1, x2, y2, x_sensor, y_sensor)
+    (0.5 / ((x1 - x_sensor)^2 + (y1 - y_sensor)^2 + 0.1)) + (0.5 / ((x2 - x_sensor)^2 + (y2 - y_sensor)^2 + 0.1))
+end
+
+function value_for_one(x1, y1, x_sensor, y_sensor)
+    (1 / ((x1 - x_sensor)^2 + (y1 - y_sensor)^2 + 0.1))
+end
+
+earthquake_exercise_setup(value_for_two_mean, "EarthquakeExerciseMeanData.txt")
+earthquake_exercise_setup(value_for_two_sum, "EarthquakeExerciseData.txt")
