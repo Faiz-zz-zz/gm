@@ -1,0 +1,7 @@
+digraph G {
+    rankdir=LR
+	x1x2[label="X(1), X(2)"]
+	x2[label="X(2)", shape=box]
+	x2x3[label="X(2), X(3)"]
+	x1x2->x2->x2x3[dir=none]
+}

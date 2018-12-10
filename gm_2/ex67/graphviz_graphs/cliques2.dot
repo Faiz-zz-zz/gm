@@ -1,0 +1,12 @@
+digraph G {
+    rankdir=LR
+	x1x2[label="X(1), X(2)"]
+	inv[label="...", shape=none]
+	xi[label="X(i)", shape=box]
+	xixip1[label="X(i), X(i+1)"]
+	inv2[label="...", shape=none]
+	xnm1[label="X(N-1)", shape=box]
+	xnm1xn[label="X(N-1), X(N)"]
+	
+	x1x2->inv->xi->xixip1->inv2->xnm1->xnm1xn[dir=none]
+}

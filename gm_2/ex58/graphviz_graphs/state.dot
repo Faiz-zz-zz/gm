@@ -1,0 +1,92 @@
+digraph G {
+    
+    r0[label=<R(0)>]
+    
+    r0->f00
+    r0->f10
+    r0->f20
+    
+    subgraph fnames {
+        
+        subgraph fname0 {
+            
+            f00[label=<F(0,0)>]
+            f01[label=<F(0,1)>]
+            f0i[label=<...>, shape=none]
+            f0n[label=<F(0,a)>]
+            f00->f01->f0i->f0n
+        
+        }
+        
+        subgraph fname1 {
+            
+            f10[label=<F(1,0)>]
+            f11[label=<F(1,1)>]
+            f1i[label=<...>, shape=none]
+            f1n[label=<F(1,b)>]
+            f10->f11->f1i->f1n
+        
+        }
+        
+        subgraph fname2 {
+            
+            f20[label=<F(2,0)>]
+            f21[label=<F(2,1)>]
+            f2i[label=<...>, shape=none]
+            f2n[label=<F(2,b)>]
+            f20->f21->f2i->f2n
+        
+        }
+    
+    }
+    
+    r1[label=<R(1)>]
+    f0n->r1
+    f1n->r1
+    f2n->r1
+    r1->s00
+    r1->s10
+    r1->s20
+    
+    subgraph snames {
+        
+        subgraph sname0 {
+            
+            s00[label=<S(0,0)>]
+            s01[label=<S(0,1)>]
+            s0i[label=<...>, shape=none]
+            s0n[label=<S(0,a)>]
+            s00->s01->s0i->s0n
+        
+        }
+        
+        subgraph sname1 {
+            
+            s10[label=<S(1,0)>]
+            s11[label=<S(1,1)>]
+            s1i[label=<...>, shape=none]
+            s1n[label=<S(1,b)>]
+            s10->s11->s1i->s1n
+        
+        }
+        
+        subgraph sname2 {
+            
+            s20[label=<S(2,0)>]
+            s21[label=<S(2,1)>]
+            s2i[label=<...>, shape=none]
+            s2n[label=<S(2,b)>]
+            s20->s21->s2i->s2n
+        
+        }
+    
+    }
+    
+    s0n->r00
+    s1n->r00
+    s2n->r00
+    
+    r00[label=<R(0)>]
+	
+	
+}

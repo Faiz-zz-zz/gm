@@ -1,0 +1,130 @@
+digraph G {
+    
+    rankdir=LR
+    
+    ranksep=1
+    
+    subgraph first_names {
+        
+        f00[label=<F(0,0)>]
+        f01[label=<F(0,1)>]
+        f0i[label=<...>, shape=none]
+        f0n[label=<F(0,LF0)>]
+        
+        f00->f01[label=<1.0>]
+        f01->f0i[label=<1.0>]
+        f0i->f0n[label=<1.0>]
+        
+        f10[label=<F(1,0)>]
+        f11[label=<F(1,1)>]
+        f1i[label=<...>, shape=none]
+        f1n[label=<F(1,LF1)>]
+        
+        f10->f11[label=<1.0>]
+        f11->f1i[label=<1.0>]
+        f1i->f1n[label=<1.0>]
+        
+        fi0[label=<...>, shape=none]
+        fi1[label=<...>, shape=none]
+        fii[label=<...>, shape=none]
+        fin[label=<...>, shape=none]
+        
+        fi0->fi1[label=<1.0>, style=invis]
+        fi1->fii[label=<1.0>, style=invis]
+        fii->fin[label=<1.0>, style=invis]
+        
+        fm0[label=<F(M,0)>]
+        fm1[label=<F(M,1)>]
+        fmi[label=<...>, shape=none]
+        fmn[label=<F(M,LFM)>]
+        
+        fm0->fm1[label=<1.0>]
+        fm1->fmi[label=<1.0>]
+        fmi->fmn[label=<1.0>]
+        
+    }
+    
+    subgraph surnames {
+        
+        s00[label=<S(0,0)>]
+        s01[label=<S(0,1)>]
+        s0i[label=<...>, shape=none]
+        s0n[label=<S(0,LS0)>]
+        
+        s00->s01[label=<1.0>]
+        s01->s0i[label=<1.0>]
+        s0i->s0n[label=<1.0>]
+        
+        s10[label=<S(1,0)>]
+        s11[label=<S(1,1)>]
+        s1i[label=<...>, shape=none]
+        s1n[label=<S(1,LS1)>]
+        
+        s10->s11[label=<1.0>]
+        s11->s1i[label=<1.0>]
+        s1i->s1n[label=<1.0>]
+        
+        si0[label=<...>, shape=none]
+        si1[label=<...>, shape=none]
+        sii[label=<...>, shape=none]
+        sin[label=<...>, shape=none]
+        
+        si0->si1[label=<1.0>, style=invis]
+        si1->sii[label=<1.0>, style=invis]
+        sii->sin[label=<1.0>, style=invis]
+        
+        sm0[label=<S(N,0)>]
+        sm1[label=<S(N,1)>]
+        smi[label=<...>, shape=none]
+        smn[label=<S(N,LSN)>]
+        
+        sm0->sm1[label=<1.0>]
+        sm1->smi[label=<1.0>]
+        smi->smn[label=<1.0>]
+        
+    }
+    
+    {
+        f00, f10, fi0, fm0, s0n, s1n, smn, sin
+        rank = same
+    }
+    
+    {
+        f01, f11, fi1, fm1, s0i, s1i, smi, sii
+        rank = same
+    }
+    
+    {
+        f0i, f1i, fii, fmi, s01, s11, sm1, si1
+        rank = same
+    }
+    
+    {
+        f0n, f1n, fin, fmn, s00, s10, sm0, si0
+        rank = same
+    }
+    
+    
+    r0[label=<R(0)>]
+    r1[label=<R(1)>]
+    r0->f00[label="0.2 / M"]
+    r0->f10[label="0.2 / M"]
+    r0->fi0[style=invis]
+    r0->fm0[label="0.2 / M"]
+    f0n->r1[label="1.0"]
+    f1n->r1[label="1.0"]
+    fmn->r1[label="1.0"]
+    r1->s00[label="0.2 / N"]
+    r1->s10[label="0.2 / N"]
+    r1->si0[label="0.2 / N", style=invis]
+    r1->sm0[label="0.2 / N"]
+    r0->s0n[dir=back, label="1.0"]
+    r0->s1n[dir=back, label="1.0"]
+    r0->sin[dir=back, label="1.0", style=invis]
+    r0->smn[dir=back, label="1.0"]
+
+    r0->r0[label=<0.8>]
+    r1->r1[label=<0.8>]
+    
+    
+}
